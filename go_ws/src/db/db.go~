@@ -1,13 +1,9 @@
-package main
-
+package db
 
 import (
-   // "net/url"
-   // "fmt"
-    "log"
-   // "os"
-    "time"
-    "github.com/influxdb/influxdb/client/v2"
+  "log"
+  "time"
+  "github.com/influxdb/influxdb/client/v2"
 )
 
 const (
@@ -16,8 +12,9 @@ const (
     password = "admins"
 )
 
-func main() {
-    // Make client
+func putData(w http.ResponseWriter, r *http.Request){
+
+// Make client
     c,conErr := client.NewHTTPClient(client.HTTPConfig{
         Addr: "http://localhost:8086",
         Username: username,
@@ -40,10 +37,10 @@ func main() {
 
     // Create a point and add to batch
     tags := map[string]string{"host": "primary",
-		"plant": "chennai4",
+		"plant": "From another file",
 		}
     fields := map[string]interface{}{
-        "power":   26.4,
+        "power":   26.8,
     }
     pt,ptErr := client.NewPoint("power", tags, fields, time.Now())
     bp.AddPoint(pt)
@@ -54,22 +51,10 @@ func main() {
 
     // Write the batch
     c.Write(bp)
-    
-    
+
+log.Println("data written suucessfully...")
+
 }
 
 
 
-func queryDB(clnt client.Client, cmd string) (res []client.Result, err error) {
-    q := client.Query{
-        Command:  cmd,
-        Database: MyDB,
-    }
-    if response, err := clnt.Query(q); err == nil {
-        if response.Error() != nil {
-            return res, response.Error()
-        }
-        res = response.Results
-    }
-    return res, nil
-}
