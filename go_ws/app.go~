@@ -6,16 +6,74 @@ import (
   "net/http"
   "os"
   "path"
+  "time"
+  "github.com/influxdb/influxdb/client/v2"
 )
+
+
+const (
+    MyDB = "iplonDb"
+    username = "admin"
+    password = "admins"
+)
+
+func putData(){
+
+// Make client
+    c,conErr := client.NewHTTPClient(client.HTTPConfig{
+        Addr: "http://localhost:8086",
+        Username: username,
+        Password: password,
+    })
+    
+    if conErr != nil {
+		log.Fatal(conErr)
+	}
+
+    // Create a new point batch
+    bp,batchErr := client.NewBatchPoints(client.BatchPointsConfig{
+        Database:  MyDB,
+        Precision: "s",
+    })
+    
+        if batchErr != nil {
+		log.Fatal(batchErr)
+	}
+
+    // Create a point and add to batch
+    tags := map[string]string{"host": "primary",
+		"plant": "chennai3",
+		}
+    fields := map[string]interface{}{
+        "power":   26.8,
+    }
+    pt,ptErr := client.NewPoint("power", tags, fields, time.Now())
+    bp.AddPoint(pt)
+    
+            if ptErr != nil {
+		log.Fatal(ptErr)
+	}
+
+    // Write the batch
+    c.Write(bp)
+
+log.Println("data written suucessfully...")
+
+}
+
 
 func main() {
 	
+http.HandleFunc("/putdata/", putData)
+
   fs := http.FileServer(http.Dir("static"))
   http.Handle("/static/", http.StripPrefix("/static/", fs))
   http.HandleFunc("/", serveTemplate)
 
   log.Println("Listening...")
   http.ListenAndServe(":3010", nil)
+
+
 }
 
 func serveTemplate(w http.ResponseWriter, r *http.Request) {

@@ -75,7 +75,7 @@ secData :=rqst.FormValue("secdata")
 
     // Write the batch
     c.Write(bp)
-http.Redirect(rspns, rqst, "faq.html", 301)
+http.Redirect(rspns, rqst, "getdata.html", 301)
 log.Println("data written suucessfully...")
 
 }
@@ -96,10 +96,15 @@ func queryDB(clnt client.Client, cmd string) (res []client.Result, err error) {
     return res, nil
 }
 
-func GetData(MyMeasurement string) (endRes string){
+func GetData(MyMeasurement string) (res []client.Result){
 			q := fmt.Sprintf("SELECT * FROM %s LIMIT %d", MyMeasurement, 20)
-			var val string
+			//var val string
 			
+		//type Person struct {
+		//		Name string
+		//}
+		
+		//p := Person{Name: "Thirukumaa"}
 			//clnt,conErr := GetConnection()    
     
 			//if conErr != nil {
@@ -117,20 +122,8 @@ func GetData(MyMeasurement string) (endRes string){
 				log.Fatal(err)
 			}
 
-			for i, row := range res[0].Series[0].Values {
-				t, err := time.Parse(time.RFC3339, row[0].(string))
-				if err != nil {
-					log.Fatal(err)
-				}
-			   val = row[1].(string)
-			   
-				//fmt.Fprintf(w, "Hi there, I love %s!", val)
-				log.Printf("[%2d] %s: %s\n", i, t.Format(time.Stamp), val)
-				
-			}
-				
 						
-			return (val) 
+			return res 
 			 			
 }
 
