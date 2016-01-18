@@ -32,8 +32,8 @@ func GetConnection() (c client.Client, err error){
 func PutData(rspns http.ResponseWriter,rqst *http.Request){
 	
 
-name2 :=rqst.FormValue("onedata")
-secData :=rqst.FormValue("secdata")
+name2 :=rqst.FormValue("data1")
+secData :=rqst.FormValue("data2")
 
     //c,conErr := GetConnection()    
     
@@ -75,7 +75,7 @@ secData :=rqst.FormValue("secdata")
 
     // Write the batch
     c.Write(bp)
-http.Redirect(rspns, rqst, "getdata.html", 301)
+//http.Redirect(rspns, rqst, "getdata.html", 301)
 log.Println("data written suucessfully...")
 
 }

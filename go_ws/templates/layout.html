@@ -1,69 +1,113 @@
 {{define "layout"}}
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{template "title"}}</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="description" content="GeoGola - Admin Template with Angularjs">
+	<meta name="keywords" content="materia, webapp, admin, dashboard, template, ui, material admin, material design, themeforest, materialup, material, material template">
+	<meta name="author" content="solutionportal">
+	<!-- <base href="/"> -->
 
-    <link href="static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="static/font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link href="static/css/animate.css" rel="stylesheet">
-    <link href="static/css/style.css" rel="stylesheet">
+	<title>GeoGola User Login</title>
 
+	<!-- Icons -->
+	<link rel="stylesheet" href="fonts/ionicons/css/ionicons.min.css">
+	<link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css">
 
-</head>
-<body>
-<a href="putdata.html"><button>Add data</button></a>
-<a href="getdata.html"><button>List data</button></a>	
 	
-  {{template "body" .}}
-  
-<!--  <iframe src="http://localhost:3000" width="500px" height="500px"></iframe> -->
-  
+	<!-- Css/Less Stylesheets -->
+	<link rel="stylesheet" href="styles/angular-material.min.css">
+	<link rel="stylesheet" href="styles/bootstrap.min.css">
+	<link rel="stylesheet" href="styles/main.min.css">
+    <link rel="stylesheet" href="styles/style-update.css">
+	
+	<!-- <link rel="stylesheet" href="styles/vendors/bootstrap.min.css"> -->
+	<!-- <link rel="stylesheet" href="_tmp/main.min.css"> -->
+	 
+ 	<link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,300' rel='stylesheet' type='text/css'>
 
-<!-- Mainly scripts -->
-    <script src="/static/js/jquery-2.1.1.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-    <script src="/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-    <!-- Custom and plugin javascript -->
-    <script src="/static/js/inspinia.js"></script>
-    <script src="/static/js/plugins/pace/pace.min.js"></script>
-
-    <script>
-        $(document).ready(function(){
-
-            $('#loading-example-btn').click(function () {
-                btn = $(this);
-                simpleLoad(btn, true)
-
-                // Ajax example
-//                $.ajax().always(function () {
-//                    simpleLoad($(this), false)
-//                });
-
-                simpleLoad(btn, false)
-            });
-        });
-
-        function simpleLoad(btn, state) {
-            if (state) {
-                btn.children().addClass('fa-spin');
-                btn.contents().last().replaceWith(" Loading");
-            } else {
-                setTimeout(function () {
-                    btn.children().removeClass('fa-spin');
-                    btn.contents().last().replaceWith(" Refresh");
-                }, 2000);
-            }
-        }
-    </script>
+	<!-- Match Media polyfill for IE9 -->
+	<!--[if IE 9]> <script src="scripts/ie/matchMedia.js"></script>  <![endif]--> 
+</head>
+<body ng-app="app" 
+	id="app" custom-page
+	class="app off-canvas {{.UserName}}" ng-class="{'nav-expand': navFull, 'body-full': bodyFull}"
+	ng-controller="AppCtrl">
 
 
+	<header class="site-head" ng-controller="HeadCtrl"
+		id="site-head" ng-class="{'fixedHeader': fixedHeader}"
+		ng-include=" 'templates/header.html' ">
+		<!-- linked header (static) view -->
+	</header>
 
 
+	<!-- main-container -->
+	<div class="main-container clearfix" ng-class="{'nav-expand': navFull, 'nav-horizontal': navHorizontal}">
+		<aside class="nav-wrap" ng-class="{'nav-expand': navFull, 'nav-offcanvas': navOffCanvas}"
+			id="site-nav" custom-scrollbar
+			ng-include=" 'templates/nav.html' ">
+		
+		</aside>
+
+		<!-- content-here -->
+		<div ng-class="{'nav-expand': navFull, 'fixedHeader': fixedHeader}"
+			class="content-container" 
+			id="content"
+			ng-view>
+		</div>
+
+	</div> <!-- #end main-container -->
+
+	
+	<!-- settings -->
+	<div class="site-settings clearfix hidden-xs" ng-class="{'open': isSettingsOpen}">
+		<div class="settings clearfix">
+			<div class="trigger ion ion-settings left" ng-click="toggleSettingsBox()"></div>
+			<div class="wrapper left">
+				<ul class="list-unstyled other-settings">
+					<li class="clearfix mb10">
+						<div class="left small">Nav Horizontal</div>
+						<md-switch class="right" ng-model="navHorizontal" style="margin: 0" ng-change="onNavHorizontal()">
+						</md-switch>
+					</li>
+					<li class="clearfix mb10">
+						<div class="left small">Fixed Header</div>
+						<md-switch class="right" ng-model="fixedHeader" style="margin: 0" ng-change="onFixedHeader()">
+						</md-switch>
+					</li>
+					<li class="clearfix mb10">
+						<div class="left small">Nav Full</div>
+						<md-switch class="right" ng-model="navFull" style="margin: 0" ng-change="onNavFull()">
+						</md-switch>
+					</li>
+				</ul>
+				<hr/>
+				<ul class="themes list-unstyled">
+					<li ng-class="{active: theme-zero}" ng-model="themeModel" btn-radio="'theme-zero'" ng-change="onThemeChange(themeModel)"></li>
+					<li ng-class="{active: theme-one}" ng-model="themeModel" btn-radio="'theme-one'" ng-change="onThemeChange(themeModel)"></li>
+					<li ng-class="{active: theme-two}" ng-model="themeModel" btn-radio="'theme-two'" ng-change="onThemeChange(themeModel)"></li>
+					<li ng-class="{active: theme-three}" ng-model="themeModel" btn-radio="'theme-three'" ng-change="onThemeChange(themeModel)"></li>
+					<li ng-class="{active: theme-four}" ng-model="themeModel" btn-radio="'theme-four'" ng-change="onThemeChange(themeModel)"></li>
+					<li ng-class="{active: theme-five}" ng-model="themeModel" btn-radio="'theme-five'" ng-change="onThemeChange(themeModel)"></li>
+					<li ng-class="{active: theme-six}" ng-model="themeModel" btn-radio="'theme-six'" ng-change="onThemeChange(themeModel)"></li>
+					<li ng-class="{active: theme-seven}" ng-model="themeModel" btn-radio="'theme-seven'" ng-change="onThemeChange(themeModel)"></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- #settings -->
+
+
+	
+	<!-- Dev only -->
+	<script src="scripts/vendors.js"></script>
+
+	<script src="scripts/plugins.js"></script>
+	
+	<script src="scripts/app.js"></script>
+	
 </body>
 </html>
 {{end}}
