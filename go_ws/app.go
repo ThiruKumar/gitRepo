@@ -13,8 +13,7 @@ import (
 )
 
 
-func main() {
-	
+func main() {	
   http.HandleFunc("/PutData",func(w http.ResponseWriter, r *http.Request) {
      db.PutData(w,r)
 })
@@ -24,9 +23,9 @@ func main() {
 
   http.HandleFunc("/getData",func(w http.ResponseWriter, r *http.Request) {
   
-   // res := db.GetData("power")
+    res := db.GetData("power")
     
-   type Todo struct {
+/*   type Todo struct {
     Name      string    `json:"name"`
     Completed bool      `json:"completed"`
 }
@@ -36,10 +35,11 @@ type Todos []Todo
     
         todos := Todos{
         Todo{Name: "Write presentation"},
-        Todo{Name: "Host meetup"},
-    }
+        
+    } */
 
-    json.NewEncoder(w).Encode(todos)
+
+    json.NewEncoder(w).Encode(res)
     
  
 })

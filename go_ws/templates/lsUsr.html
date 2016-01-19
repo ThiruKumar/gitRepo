@@ -9,14 +9,18 @@
 <table class="table table-bordered table-striped table-hover">
 <thead>
 <tr>
-<td>First Name</td>
-<td>Last Name</td>
+<td>Timestamp</td>
+<td>Host</td>
+<td>Plant</td>
+<td>Power</td>
 </tr>
 </thead>
 <tbody>
-<tr ng-repeat="insertedData in datas">
-<td>{{insertedData.name}}</td>
-<td>{{insertedData.name}}</td>
+<tr ng-repeat="insertedData in datas[0].Series[0].values">
+<td>{{insertedData[0]}}</td>
+<td>{{insertedData[1]}}</td>
+<td>{{insertedData[2]}}</td>
+<td>{{insertedData[3]}}</td>
 </tr>
 </tbody>
 

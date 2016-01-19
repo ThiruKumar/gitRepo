@@ -46,6 +46,8 @@ app.controller('lsUsrCtrl', function ($scope, $http) {
         $http.get('getData').success(function(data){
 		$scope.datas = data;
 		console.log(data.toSource());
+		//console.log(data[0].Series[0].values[0]);
+		
         }).error(function(data){
             $scope.tasks = data;
         });
